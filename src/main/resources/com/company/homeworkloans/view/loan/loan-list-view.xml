@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://loanListView.title"
+      focusComponent="loansDataGrid">
+    <data>
+        <collection id="loansDc"
+                    class="com.company.homeworkloans.entity.Loan">
+            <fetchPlan extends="_base">
+                <property name="client" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="loansDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Loan e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="loansDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <simplePagination id="pagination" dataLoader="loansDl"/>
+        </hbox>
+        <dataGrid id="loansDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="loansDc"
+                  columnReorderingAllowed="true">
+            <actions>
+            </actions>
+            <columns resizable="true">
+                <column property="client"/>
+                <column property="amount"/>
+                <column property="requestDate"/>
+                <column property="status"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>
