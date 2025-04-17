@@ -34,6 +34,7 @@
             <button id="createBtn" action="clientsDataGrid.create"/>
             <button id="editBtn" action="clientsDataGrid.edit"/>
             <button id="removeBtn" action="clientsDataGrid.remove"/>
+            <button id="requestLoan" text="Request loan" icon="MONEY"/>
             <simplePagination id="pagination" dataLoader="clientsDl"/>
         </hbox>
         <dataGrid id="clientsDataGrid"

@@ -4,6 +4,7 @@ import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
+import io.jmix.core.metamodel.annotation.JmixProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.UUID;
 
 @JmixEntity
@@ -92,5 +94,14 @@ public class Client {
     @DependsOnProperties({"firstName", "lastName"})
     public String getInstanceName() {
         return String.format("%s %s", firstName, lastName);
+    }
+
+    @JmixProperty
+    @DependsOnProperties({"birthDate"})
+    public Integer getAge() {
+        if (birthDate != null) {
+            return Period.between(birthDate, LocalDate.now()).getYears();
+        }
+        return null;
     }
 }

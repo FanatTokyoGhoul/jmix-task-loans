@@ -5,6 +5,7 @@
         <item view="User.list" title="msg://com.company.homeworkloans.view.user/UserListView.title"/>
         <item view="Client.list" title="msg://com.company.homeworkloans.view.client/clientListView.title"/>
         <item view="Loan.list" title="msg://com.company.homeworkloans.view.loan/loanListView.title"/>
+        <item view="LoanApproval.list" title="msg://com.company.homeworkloans.view.loan/loanApprovalListView.title"/>
     </menu>
 
 </menu-config>

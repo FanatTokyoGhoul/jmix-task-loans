@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://requestLoan.title">
+    <data>
+        <instance id="loansDc"
+                  class="com.company.homeworkloans.entity.Loan">
+            <fetchPlan extends="_base">
+                <property name="client" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <layout>
+        <formLayout id="form" width="99%">
+            <hbox id="dataPanel" width="100%" justifyContent="END">
+                <entityPicker
+                        dataContainer="loansDc"
+                        id="clientField"
+                        property="client"
+                        required="true"
+                        width="50%"
+                >
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <textField
+                        id="amountField"
+                        required="true"
+                        dataContainer="loansDc"
+                        property="amount"
+                        width="50%"
+                >
+                </textField>
+            </hbox>
+        </formLayout>
+
+        <hbox id="buttonPanel" spacing="true" justifyContent="END" width="99%">
+            <button id="requestBtn" icon="CHECK" text="Request"/>
+            <button id="cancelBtn" icon="CLOSE" text="Cancel"/>
+        </hbox>
+    </layout>
+</view>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://loanApprovalListView.title"
+      focusComponent="loansDataGrid">
+    <data>
+        <collection id="loansDc"
+                    class="com.company.homeworkloans.entity.Loan">
+            <fetchPlan extends="_base">
+                <property name="client" fetchPlan="_base">
+                    <property name="age"/>
+                </property>
+            </fetchPlan>
+            <loader id="loansDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Loan e where e.status = 'R' order by e.requestDate desc]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="previousLoansDc"
+                    class="com.company.homeworkloans.entity.Loan">
+            <fetchPlan extends="_instance_name">
+                <property name="status"/>
+                <property name="amount"/>
+                <property name="requestDate"/>
+                <property name="client" fetchPlan="_instance_name"/>
+            </fetchPlan>
+            <loader id="previousLoanDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Loan e
+                             where e.client.id = :clientId
+                             and not (e.id = :currentLoanId)
+                             order by e.requestDate desc ]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="loansDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="approveButton" text="Approve" icon="CHECK"/>
+            <button id="rejectButton" text="Reject" icon="CLOSE"/>
+            <simplePagination id="pagination" dataLoader="loansDl"/>
+        </hbox>
+        <dataGrid id="loansDataGrid"
+                  width="100%"
+                  height="100%"
+                  dataContainer="loansDc"
+                  columnReorderingAllowed="true">
+            <actions>
+            </actions>
+            <columns resizable="true">
+                <column property="requestDate"/>
+                <column property="client"/>
+                <column property="amount"/>
+                <column property="client.phoneNumber"/>
+                <column property="client.salary"/>
+                <column property="client.age"/>
+            </columns>
+        </dataGrid>
+        <vbox spacing="false">
+            <nativeLabel text="Previous Loans"/>
+            <dataGrid id="previousLoansDataGrid"
+                      width="100%"
+                      height="200px"
+                      dataContainer="previousLoansDc"
+                      columnReorderingAllowed="true">
+                <actions>
+                </actions>
+                <columns resizable="true">
+                    <column property="requestDate"/>
+                    <column property="amount"/>
+                    <column property="status"/>
+                </columns>
+            </dataGrid>
+        </vbox>
+    </layout>
+</view>
